@@ -1,0 +1,37 @@
+@url = http://localhost:5039
+
+@id = 53281bad-82ae-4c2a-8103-1e0ca4942116
+@token = nzsTbz
+
+GET {{url}}/api/academy/
+Accept: application/json
+
+### Get by id
+GET {{url}}/api/academy/{{id}}
+Accept: application/json
+
+### Get by token
+GET {{url}}/api/academy/by-token/{{token}}
+Accept: application/json
+
+### Create new Academy
+POST {{url}}/api/academy/
+Content-Type: application/json
+
+{
+    "name": "Ilmhub-Tashkent LC",
+    "address": "Toshkent shaxar, eco-bozor"
+}
+
+### Delete
+DELETE {{url}}/api/academy/{{id}}
+Accept: application/json
+
+### Update(not implemented yet)
+PUT {{url}}/api/academy/{{id}}
+Content-Type: application/json
+
+{
+    "name": "Ilmhub-Tashkent LC",
+    "address": "Toshkent shaxar, eco-bozor"
+}

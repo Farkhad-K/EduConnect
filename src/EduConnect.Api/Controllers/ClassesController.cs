@@ -1,0 +1,113 @@
+using System.IdentityModel.Tokens.Jwt;
+using EduConnect.Api.Abstractions;
+using EduConnect.Api.Dtos.ClassDtos;
+using EduConnect.Api.Exceptions;
+using EduConnect.Api.Mappers.ClassMappers;
+using EduConnect.Api.Utilities;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+
+namespace EduConnect.Api.Controllers;
+
+// [Authorize]
+[ApiController]
+[Route("api/[controller]")]
+public class ClassesController(
+    IClassesService classesService,
+    ILogger<ClassesController> logger) : ControllerBase
+{
+    [Authorize(Roles = "Admin")]
+    [HttpGet]
+    public async ValueTask<IActionResult> GetAllClassesAsync(CancellationToken abortionToken = default)
+    {
+        var academyId = GetAcademyIdFromToken();
+
+        if (academyId == null)
+            return Forbid("You do not have permission to access this resource.");
+
+        var classes = await classesService.GetClassesByAcademyAsync(academyId.Value, abortionToken);
+        return Ok(classes.Select(c => c.ToDto()));
+    }
+
+    [HttpGet("{id:guid}")]
+    public async Task<IActionResult> GetClassByIdAsync([FromRoute] Guid id, CancellationToken abortionToken = default)
+    {
+        try
+        {
+            var classEntity = await classesService.GetClassByIdAsync(id, abortionToken);
+            return Ok(classEntity.ToDto());
+        }
+        catch (ClassNotFoundException)
+        {
+            return NotFound($"Class with ID {id} not found.");
+        }
+    }
+
+    // Modification is needed
+    // [Authorize(Roles = "Teacher")]
+    [HttpGet("my-classes")]
+    public async ValueTask<IActionResult> GetTeachersClassesAsync(CancellationToken abortionToken = default)
+    {
+        var teacherId = JwtClaimHelper.GetUserIdFromToken(User);
+        // var teacherId = GetUserIdFromToken();
+        Console.WriteLine(teacherId!.Value);
+
+        if (teacherId == null)
+            return Forbid("You do not have permission to access this resource.");
+
+        var classes = await classesService.GetAllClassesAsync(abortionToken);
+        return Ok(classes.Where(c => c.TeacherId == teacherId.Value).Select(c => c.ToDto()));
+        // return Ok(classes.Select(c => c.ToDto()));
+    }
+
+    [Authorize(Roles = "Admin")]
+    [HttpPost]
+    public async Task<IActionResult> CreateClassAsync([FromBody] CreateClass classDto, CancellationToken cancellationToken = default)
+    {
+        var academyId = GetAcademyIdFromToken();
+
+        if (academyId == null)
+            return Forbid("You do not have permission to create a class.");
+
+        var newClass = classDto.ToEntity();
+        newClass.AcademyId = academyId;
+
+        try
+        {
+            var createdClass = await classesService.CreateClassAsync(newClass, cancellationToken);
+            return Ok("Successfully created");//CreatedAtAction(nameof(GetClassByIdAsync), new { id = createdClass.Id }, createdClass.ToDto());
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Error creating class.");
+            return StatusCode(500, "An error occurred while creating the class.");
+        }
+    }
+
+    [Authorize(Roles = "Admin")]
+    [HttpDelete("{id:guid}")]
+    public async Task<IActionResult> DeleteClassAsync([FromRoute] Guid id, CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            await classesService.DeleteClassAsync(id, cancellationToken);
+            return NoContent();
+        }
+        catch (ClassNotFoundException)
+        {
+            return NotFound($"Class with ID {id} not found.");
+        }
+    }
+
+    private Guid? GetAcademyIdFromToken()
+    {
+        var academyIdClaim = User.Claims.FirstOrDefault(c => c.Type == "AcademyId")?.Value;
+        return Guid.TryParse(academyIdClaim, out var academyId) ? academyId : null;
+    }
+
+    private Guid? GetUserIdFromToken()
+    {
+        var idClaim = User.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Sub)?.Value;
+        return Guid.TryParse(idClaim, out var id) ? id : null;
+    }
+}
