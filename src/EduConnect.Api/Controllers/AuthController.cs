@@ -1,5 +1,6 @@
 using EduConnect.Api.Abstractions;
 using EduConnect.Api.Dtos;
+using EduConnect.Api.Repositories;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,8 +9,9 @@ namespace EduConnect.Api.Controllers;
 [ApiController]
 [Route("api/auth")]
 public class AuthController(
-    IAuthService authService, 
-    IValidator<RegisterRequest> registerValidator, 
+    IAuthService authService,
+    IUserRepository userRepository,
+    IValidator<RegisterRequest> registerValidator,
     IValidator<RegisterAdminRequest> registerAdminValidator,
     IValidator<RegisterTeacherRequest> registerTeacherValidator,
     IValidator<LoginRequest> loginValidator) : ControllerBase
@@ -24,8 +26,9 @@ public class AuthController(
         if (!validationResult.IsValid)
             return BadRequest(validationResult.Errors.Select(e => new { e.PropertyName, e.ErrorMessage }));
 
-        var user = await authService.RegisterAsync(request);
-        return CreatedAtAction(nameof(RegisterUser), new { email = user.Email }, new { user.Id, user.Email });
+        var token = await authService.RegisterAsync(request);
+        // return CreatedAtAction(nameof(RegisterUser), new { email = user.Email }, new { user.Id, user.Email });
+        return Ok(new { Token = token });
     }
 
     /// <summary>
@@ -64,6 +67,9 @@ public class AuthController(
             return BadRequest(validationResult.Errors.Select(e => new { e.PropertyName, e.ErrorMessage }));
 
         var token = await authService.LoginAsync(request);
-        return Ok(new { Token = token });
+        // return Ok(new { Token = token });
+
+        var user = await userRepository.GetByEmailAsync(request.Email!);
+        return Ok(new { Token = token, Role = user?.Role });
     }
 }
