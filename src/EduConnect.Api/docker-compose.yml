@@ -24,7 +24,6 @@ services:
     image: postgres:16
     restart: always
     environment:
-      POSTGRES_DB: educonnect
       POSTGRES_USER: root
       POSTGRES_PASSWORD: example
     ports:
