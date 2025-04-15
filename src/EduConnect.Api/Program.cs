@@ -26,6 +26,8 @@ builder.Services.AddScoped<ITokensForTeachersRepository, TokensForTeachersReposi
 builder.Services.AddScoped<ITokensForTeachersService, TokensForTeachersService>();
 builder.Services.AddScoped<IStudentsService, StudentsService>();
 builder.Services.AddScoped<IStudentsRepository, StudentsRepository>();
+builder.Services.AddScoped<ITeachersService, TeachersService>();
+builder.Services.AddScoped<ITeacherRepository, TeacherRepository>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 
 builder.Services.AddScoped<IValidator<RegisterRequest>, RegisterRequestValidator>();
