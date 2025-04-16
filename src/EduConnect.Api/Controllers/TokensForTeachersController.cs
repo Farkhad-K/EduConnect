@@ -1,4 +1,4 @@
-using EduConnect.Api.Abstractions;
+using EduConnect.Api.Abstractions.ServicesAbstractions;
 using EduConnect.Api.Utilities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -8,7 +8,8 @@ namespace EduConnect.Api.Controllers;
 [Authorize(Roles = "Admin")]
 [ApiController]
 [Route("api/[controller]")]
-public class TokensForTeachersController(ITokensForTeachersService tokenService) : ControllerBase
+public class TokensForTeachersController(
+    ITokensForTeachersService tokenService) : ControllerBase
 {
     [HttpPost("generate")]
     public async Task<IActionResult> GenerateTokenAsync(CancellationToken abortionToken = default)

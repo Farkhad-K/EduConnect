@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace EduConnect.Api.Abstractions;
+namespace EduConnect.Api.Abstractions.RepositoriesAbstractions;
 
 public interface IAcademyRepository
 {

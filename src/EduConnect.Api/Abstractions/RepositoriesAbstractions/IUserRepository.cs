@@ -1,6 +1,6 @@
 using EduConnect.Api.Entities;
 
-namespace EduConnect.Api.Repositories;
+namespace EduConnect.Api.Abstractions.RepositoriesAbstractions;
 
 public interface IUserRepository
 {

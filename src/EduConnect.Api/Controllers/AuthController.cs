@@ -1,6 +1,6 @@
-using EduConnect.Api.Abstractions;
+using EduConnect.Api.Abstractions.RepositoriesAbstractions;
+using EduConnect.Api.Abstractions.ServicesAbstractions;
 using EduConnect.Api.Dtos;
-using EduConnect.Api.Repositories;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 

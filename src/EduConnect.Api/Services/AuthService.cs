@@ -1,10 +1,10 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using EduConnect.Api.Abstractions;
+using EduConnect.Api.Abstractions.RepositoriesAbstractions;
+using EduConnect.Api.Abstractions.ServicesAbstractions;
 using EduConnect.Api.Dtos;
 using EduConnect.Api.Entities;
-using EduConnect.Api.Repositories;
 using Microsoft.IdentityModel.Tokens;
 
 namespace EduConnect.Api.Services;

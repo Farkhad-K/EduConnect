@@ -1,6 +1,6 @@
 using EduConnect.Api.Entities;
 
-namespace EduConnect.Api.Abstractions;
+namespace EduConnect.Api.Abstractions.RepositoriesAbstractions;
 
 public interface ITeacherRepository
 {

@@ -1,5 +1,6 @@
 using System.Text;
-using EduConnect.Api.Abstractions;
+using EduConnect.Api.Abstractions.RepositoriesAbstractions;
+using EduConnect.Api.Abstractions.ServicesAbstractions;
 using EduConnect.Api.Data;
 using EduConnect.Api.Dtos;
 using EduConnect.Api.Repositories;
