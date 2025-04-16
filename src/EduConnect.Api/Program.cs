@@ -89,6 +89,7 @@ builder.Services.AddCors(options =>
             .AllowCredentials());
 });
 
+builder.Services.AddHealthChecks();
 
 var app = builder.Build();
 
@@ -101,6 +102,8 @@ app.UseSwaggerUI(c =>
 
 app.UseHttpsRedirection();
 app.UseRouting();
+
+app.MapHealthChecks("/healthz");
 
 app.UseCors("AllowFrontend");
 
