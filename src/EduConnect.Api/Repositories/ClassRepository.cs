@@ -27,7 +27,7 @@ public class ClassRepository(IEduConnectDbContext context) : IClassRepository
     public async ValueTask<IEnumerable<Class>> GetAllAsync(CancellationToken cancellationToken = default)
         => await context.Classes.AsNoTracking().ToListAsync(cancellationToken);
 
-    public async ValueTask<IEnumerable<Class>> GetByAcademyIdAsync(Guid academyId, CancellationToken cancellationToken = default)
+    public async ValueTask<IEnumerable<Class>> GetAllByAcademyIdAsync(Guid academyId, CancellationToken cancellationToken = default)
     {
         return await context.Classes
             .Where(c => c.AcademyId == academyId)
