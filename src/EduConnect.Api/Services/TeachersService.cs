@@ -1,4 +1,5 @@
-using EduConnect.Api.Abstractions;
+using EduConnect.Api.Abstractions.RepositoriesAbstractions;
+using EduConnect.Api.Abstractions.ServicesAbstractions;
 using EduConnect.Api.Entities;
 using EduConnect.Api.Exceptions;
 

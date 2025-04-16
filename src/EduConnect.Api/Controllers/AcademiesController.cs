@@ -1,9 +1,7 @@
-using EduConnect.Api.Abstractions;
+using EduConnect.Api.Abstractions.ServicesAbstractions;
 using EduConnect.Api.Dtos.AcademyDtos;
-using EduConnect.Api.Entities;
 using EduConnect.Api.Exceptions;
 using EduConnect.Api.Mappers.AcademyMappers;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EduConnect.Api.Controllers;

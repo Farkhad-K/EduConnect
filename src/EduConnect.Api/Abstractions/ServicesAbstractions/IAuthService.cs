@@ -1,7 +1,7 @@
 using EduConnect.Api.Dtos;
 using EduConnect.Api.Entities;
 
-namespace EduConnect.Api.Abstractions;
+namespace EduConnect.Api.Abstractions.ServicesAbstractions;
 
 public interface IAuthService
 {

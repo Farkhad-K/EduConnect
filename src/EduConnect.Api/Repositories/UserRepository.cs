@@ -1,3 +1,4 @@
+using EduConnect.Api.Abstractions.RepositoriesAbstractions;
 using EduConnect.Api.Data;
 using EduConnect.Api.Entities;
 using Microsoft.EntityFrameworkCore;

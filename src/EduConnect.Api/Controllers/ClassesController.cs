@@ -1,9 +1,8 @@
 using System.IdentityModel.Tokens.Jwt;
-using EduConnect.Api.Abstractions;
+using EduConnect.Api.Abstractions.ServicesAbstractions;
 using EduConnect.Api.Dtos.ClassDtos;
 using EduConnect.Api.Exceptions;
 using EduConnect.Api.Mappers.ClassMappers;
-using EduConnect.Api.Utilities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

@@ -1,8 +1,7 @@
-using EduConnect.Api.Abstractions;
+using EduConnect.Api.Abstractions.RepositoriesAbstractions;
 using EduConnect.Api.Data;
 using EduConnect.Api.Entities;
 using EduConnect.Api.Utilities;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 
 namespace EduConnect.Api.Repositories;
