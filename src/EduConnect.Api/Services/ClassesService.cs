@@ -8,8 +8,16 @@ namespace EduConnect.Api.Services;
 public class ClassesService(
     IClassRepository classRepository) : IClassesService
 {
-    public async ValueTask<IEnumerable<Class>> GetAllClassesAsync(CancellationToken cancellationToken = default) =>
-        await classRepository.GetAllAsync(cancellationToken);
+    public async ValueTask<IEnumerable<Class>> GetClassesByAcademyAsync(Guid academyId, CancellationToken cancellationToken = default)
+    {
+        return await classRepository.GetAllByAcademyIdAsync(academyId, cancellationToken);
+    }
+
+    public async ValueTask<IEnumerable<Class>> GetClassesByTeacherAsync(Guid academyId, Guid teacherId, CancellationToken cancellationToken = default)
+        => (await classRepository.GetAllByAcademyIdAsync(academyId, cancellationToken)).Where(c => c.TeacherId == teacherId).ToList();
+
+    // public async ValueTask<IEnumerable<Class>> GetAllClassesAsync(CancellationToken cancellationToken = default) =>
+    //     await classRepository.GetAllAsync(cancellationToken);
 
     public async ValueTask<Class> GetClassByIdAsync(Guid id, CancellationToken cancellationToken = default) =>
         await classRepository.GetByIdAsync(id, cancellationToken) ?? throw new ClassNotFoundException(id);
@@ -29,10 +37,5 @@ public class ClassesService(
     public ValueTask<Class> UpdateClassAsync(Guid id, Class @class, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
-    }
-
-    public async ValueTask<IEnumerable<Class>> GetClassesByAcademyAsync(Guid academyId, CancellationToken cancellationToken = default)
-    {
-        return await classRepository.GetByAcademyIdAsync(academyId, cancellationToken);
     }
 }
