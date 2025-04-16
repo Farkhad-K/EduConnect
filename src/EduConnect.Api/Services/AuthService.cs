@@ -37,6 +37,7 @@ public class AuthService(
         
         var teacher = new Teacher
         {
+            Id = Guid.NewGuid(),
             Name = request.Name,
             Email = request.Email,
             PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password),
@@ -59,6 +60,7 @@ public class AuthService(
 
         var admin = new Admin
         {
+            Id = Guid.NewGuid(),
             Name = request.Name,
             Email = request.Email,
             PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password),
@@ -72,7 +74,7 @@ public class AuthService(
     }
 
 
-    public async Task<UserBase> RegisterAsync(RegisterRequest request)
+    public async Task<string> RegisterAsync(RegisterRequest request)
     {
         var existingUser = await userRepository.GetByEmailAsync(request.Email!);
         if (existingUser != null)
@@ -111,7 +113,7 @@ public class AuthService(
 
 
         await userRepository.AddAsync(user);
-        return user;
+        return GenerateJwtToken(user);
     }
 
     private EduConnect.Api.Entities.EUserRole MapDtoRoleToEntity(EduConnect.Api.Dtos.EUserRole dtoRole)

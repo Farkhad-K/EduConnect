@@ -5,7 +5,7 @@ namespace EduConnect.Api.Abstractions;
 
 public interface IAuthService
 {
-    Task<UserBase> RegisterAsync(RegisterRequest request);
+    Task<string> RegisterAsync(RegisterRequest request);
     Task<string> RegisterAdminAsync(RegisterAdminRequest request);
     Task<string> RegisterTeacherAsync(RegisterTeacherRequest request);
     Task<string> LoginAsync(LoginRequest request);

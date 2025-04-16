@@ -10,7 +10,7 @@ namespace EduConnect.Api.Repositories;
 public class TokensForTeachersRepository(
     IEduConnectDbContext context) : ITokensForTeachersRepository
 {
-    public async ValueTask<IEnumerable<TokenForTeachers>> GetTokenForTeachersAsync(Guid id, CancellationToken cancellationToken = default)
+    public async ValueTask<IEnumerable<TokenForTeachers>> GetTokensForTeachersAsync(Guid id, CancellationToken cancellationToken = default)
     {
         var tokensOfAcademy = await context.TokensForTeachers
             .Where(a => a.AcademyId == id)
@@ -34,7 +34,7 @@ public class TokensForTeachersRepository(
     {
         var newToken = new TokenForTeachers
         {
-            Id = new Guid(),
+            Id = Guid.NewGuid(),
             Token = TokenGenerator.GenerateToken(),
             AcademyId = academyId
         };
