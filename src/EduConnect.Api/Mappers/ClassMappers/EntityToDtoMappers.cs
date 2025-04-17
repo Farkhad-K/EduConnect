@@ -30,6 +30,8 @@ public static class EntityToDtoMappers
                 Entities.EClassSchedule.Odd => Dtos.ClassDtos.EClassSchedule.Odd,
                 Entities.EClassSchedule.Even => Dtos.ClassDtos.EClassSchedule.Even,
                 _ => throw new Exception($"{typeof(Entities.EClassSchedule).Name} value {entity.Schedule} not supported")
-            }
+            },
+            TeacherId = entity.TeacherId,
+            StudentsIds = entity.Students.Select(s => s.Id).ToList()
         };
 }
