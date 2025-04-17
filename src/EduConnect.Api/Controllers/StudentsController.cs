@@ -24,8 +24,8 @@ public class StudentsController(
         if (academyId == null)
             return Forbid("You do not have permission to access this resource.");
 
-        var students = await studentsService.GetAllStudentsAsync(abortionToken);
-        return Ok(students.Where(s => s.AcademyId == academyId.Value).Select(s => s.ToDto()));
+        var students = await studentsService.GetAllStudentsByAcademyIdAsync(academyId.Value, abortionToken);
+        return Ok(students.Select(s => s.ToDto()));
     }
 
     [HttpGet("{id:guid}")]
@@ -33,7 +33,7 @@ public class StudentsController(
     {
         try
         {
-            var student = await studentsService.GetStudenByIdAsync(id, abortionToken);
+            var student = await studentsService.GetStudentByIdAsync(id, abortionToken);
             return Ok(student.ToDto());
         }
         catch (StudentNotFoundException)
@@ -63,7 +63,6 @@ public class StudentsController(
                     var classEntity = await classesService.GetClassByIdAsync(classId, abortionToken);
                     classEntity.Students.Add(student);
                 }
-
             }
 
             var createdStudent = await studentsService.CreateStudentAsync(student, abortionToken);
@@ -82,7 +81,7 @@ public class StudentsController(
     {
         try
         {
-            var student = await studentsService.GetStudenByTokenAsync(token, abortionToken);
+            var student = await studentsService.GetStudentByTokenAsync(token, abortionToken);
             return Ok(student.ToDto());
         }
         catch (StudentWithTokenNotFoundException)

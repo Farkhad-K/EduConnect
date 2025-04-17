@@ -24,14 +24,14 @@ public class StudentsService(
         return true;
     }
 
-    public async ValueTask<IEnumerable<Student>> GetAllStudentsAsync(CancellationToken cancellationToken = default)
-        => await repository.GetAllAsync(cancellationToken);
+    public async ValueTask<IEnumerable<Student>> GetAllStudentsByAcademyIdAsync(Guid academyId, CancellationToken cancellationToken = default)
+        => await repository.GetAllAsync(academyId, cancellationToken);
 
-    public async ValueTask<Student> GetStudenByIdAsync(Guid id, CancellationToken cancellationToken = default)
+    public async ValueTask<Student> GetStudentByIdAsync(Guid id, CancellationToken cancellationToken = default)
         => await repository.GetByIdAsync(id, cancellationToken)
         ?? throw new StudentNotFoundException(id);
 
-    public async ValueTask<Student> GetStudenByTokenAsync(string uniqueToken, CancellationToken cancellationToken = default)
+    public async ValueTask<Student> GetStudentByTokenAsync(string uniqueToken, CancellationToken cancellationToken = default)
         => await repository.GetByTokenAsync(uniqueToken, cancellationToken)
         ?? throw new StudentWithTokenNotFoundException(uniqueToken);
 }

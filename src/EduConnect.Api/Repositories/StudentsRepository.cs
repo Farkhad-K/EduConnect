@@ -33,14 +33,14 @@ public class StudentsRepository(
         }
     }
 
-    public async ValueTask<IEnumerable<Student>> GetAllAsync(CancellationToken cancellationToken = default)
-        => await context.Students.AsNoTracking().ToListAsync(cancellationToken);
+    public async ValueTask<IEnumerable<Student>> GetAllAsync(Guid academyId, CancellationToken cancellationToken = default)
+        => await context.Students.AsNoTracking().Where(a => a.AcademyId == academyId).Include(c => c.Classes).ToListAsync(cancellationToken);
 
     public async ValueTask<Student?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
-        => await context.Students.FirstOrDefaultAsync(s => s.Id == id, cancellationToken)
+        => await context.Students.Include(c => c.Classes).FirstOrDefaultAsync(s => s.Id == id, cancellationToken)
         ?? throw new StudentNotFoundException(id);
 
     public async ValueTask<Student?> GetByTokenAsync(string token, CancellationToken cancellationToken = default)
-        => await context.Students.FirstOrDefaultAsync(s => s.UniqueToken == token, cancellationToken)
+        => await context.Students.Include(c => c.Classes).FirstOrDefaultAsync(s => s.UniqueToken == token, cancellationToken)
         ?? throw new StudentWithTokenNotFoundException(token);
 }

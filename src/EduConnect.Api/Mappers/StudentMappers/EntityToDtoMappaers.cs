@@ -9,7 +9,8 @@ public static class EntityToDtoMappers
         {
             Id = entity.Id,
             Name = entity.Name!,
-            UniqueToken = entity.UniqueToken!
+            UniqueToken = entity.UniqueToken!,
+            ClassIds = entity.Classes.Select(c => c.Id).ToList()
         };
 
     public static Entities.Student ToEntity(this Dtos.StudentDtos.CreateStudent dto, Guid academyId)
