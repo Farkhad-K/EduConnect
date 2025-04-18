@@ -25,16 +25,20 @@ public class ClassRepository(IEduConnectDbContext context) : IClassRepository
     }
 
     public async ValueTask<IEnumerable<Class>> GetAllByAcademyIdAsync(Guid academyId, CancellationToken cancellationToken = default)
-        => await context.Classes.Where(c => c.AcademyId == academyId).AsNoTracking()
+        => await context.Classes.Where(c => c.AcademyId == academyId).AsNoTracking().Include(c => c.Teacher)
             .Include(s => s.Students).ToListAsync(cancellationToken);
 
     public async ValueTask<Class?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
-        => await context.Classes.Include(s => s.Students).FirstOrDefaultAsync(c => c.Id == id, cancellationToken);
+        => await context.Classes.Include(c => c.Teacher).Include(s => s.Students)
+        .FirstOrDefaultAsync(c => c.Id == id, cancellationToken);
 
-    public async ValueTask<IEnumerable<Class>> GetByTeacherIdAsync(Guid academyId, Guid teacherId, CancellationToken cancellationToken = default)
-        => await context.Classes.Where(c => c.AcademyId == academyId && c.TeacherId == teacherId).Include(s => s.Students).ToListAsync(cancellationToken);
+    public async ValueTask<IEnumerable<Class>> GetByTeacherIdAsync(Guid academyId, 
+    Guid teacherId, CancellationToken cancellationToken = default)
+        => await context.Classes.Where(c => c.AcademyId == academyId && c.TeacherId == teacherId)
+        .Include(c => c.Teacher).Include(s => s.Students).ToListAsync(cancellationToken);
 
-    public ValueTask<Class> UpdateAsync(Guid id, Class @class, CancellationToken cancellationToken = default)
+    public ValueTask<Class> UpdateAsync(Guid id, 
+    Class @class, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }
