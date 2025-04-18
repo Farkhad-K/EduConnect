@@ -12,10 +12,11 @@ public class TeacherRepository(
     public async ValueTask<IEnumerable<Teacher>> GetAllAsync(Guid academyId, CancellationToken cancellationToken = default)
         => await context.Teachers.AsNoTracking()
             .Where(a => a.AcademyId == academyId)
+            .Include(c => c.Classes)
             .ToListAsync(cancellationToken);
 
     public async ValueTask<Teacher?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
-        => await context.Teachers.FirstOrDefaultAsync(t => t.Id == id, cancellationToken)
+        => await context.Teachers.Include(c => c.Classes).FirstOrDefaultAsync(t => t.Id == id, cancellationToken)
             ?? throw new TeacherNotFoundException(id);
 
     public async ValueTask<bool> DeleteAsync(Guid id, CancellationToken cancellationToken = default)
