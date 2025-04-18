@@ -1,3 +1,5 @@
+using EduConnect.Api.Dtos.ClassDtos;
+
 namespace EduConnect.Api.Mappers.ClassMappers;
 
 public static class EntityToDtoMappers
@@ -32,6 +34,11 @@ public static class EntityToDtoMappers
                 _ => throw new Exception($"{typeof(Entities.EClassSchedule).Name} value {entity.Schedule} not supported")
             },
             TeacherId = entity.TeacherId,
-            StudentsIds = entity.Students.Select(s => s.Id).ToList()
+            TeacherName = entity.Teacher?.Name ?? "Unknown",
+            Students = entity.Students.Select(s => new StudentsOfClass
+            {
+                StudentId = s.Id,
+                StudnetName = s.Name
+            }).ToList()
         };
 }
