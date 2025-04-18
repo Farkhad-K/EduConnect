@@ -115,5 +115,3 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
-
-// Controller for Teacher management 
