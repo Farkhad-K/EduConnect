@@ -1,4 +1,4 @@
-using EduConnect.Api.Abstractions;
+using EduConnect.Api.Abstractions.ServicesAbstractions;
 using EduConnect.Api.Exceptions;
 using EduConnect.Api.Mappers.TeacherMappers;
 using EduConnect.Api.Utilities;

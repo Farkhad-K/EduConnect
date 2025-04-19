@@ -1,4 +1,4 @@
-namespace EduConnect.Api.Abstractions;
+namespace EduConnect.Api.Abstractions.ServicesAbstractions;
 
 public interface ITokensForTeachersService
 {

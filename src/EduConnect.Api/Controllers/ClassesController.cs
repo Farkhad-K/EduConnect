@@ -1,9 +1,8 @@
 using System.IdentityModel.Tokens.Jwt;
-using EduConnect.Api.Abstractions;
+using EduConnect.Api.Abstractions.ServicesAbstractions;
 using EduConnect.Api.Dtos.ClassDtos;
 using EduConnect.Api.Exceptions;
 using EduConnect.Api.Mappers.ClassMappers;
-using EduConnect.Api.Utilities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -48,16 +47,15 @@ public class ClassesController(
     [HttpGet("my-classes")]
     public async ValueTask<IActionResult> GetTeachersClassesAsync(CancellationToken abortionToken = default)
     {
-        var teacherId = JwtClaimHelper.GetUserIdFromToken(User);
-        // var teacherId = GetUserIdFromToken();
-        Console.WriteLine(teacherId!.Value);
+        var teacherId = GetUserIdFromToken()!;
+        var academyId = GetAcademyIdFromToken()!;
+        // Console.WriteLine(teacherId.Value);
 
         if (teacherId == null)
             return Forbid("You do not have permission to access this resource.");
 
-        var classes = await classesService.GetAllClassesAsync(abortionToken);
+        var classes = await classesService.GetClassesByTeacherAsync(academyId.Value, teacherId.Value, abortionToken);
         return Ok(classes.Where(c => c.TeacherId == teacherId.Value).Select(c => c.ToDto()));
-        // return Ok(classes.Select(c => c.ToDto()));
     }
 
     [Authorize(Roles = "Admin")]

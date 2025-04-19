@@ -1,5 +1,6 @@
 using System.Text;
-using EduConnect.Api.Abstractions;
+using EduConnect.Api.Abstractions.RepositoriesAbstractions;
+using EduConnect.Api.Abstractions.ServicesAbstractions;
 using EduConnect.Api.Data;
 using EduConnect.Api.Dtos;
 using EduConnect.Api.Repositories;
@@ -38,6 +39,7 @@ builder.Services.AddScoped<IValidator<LoginRequest>, LoginRequestValidator>();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
+        options.MapInboundClaims = false;
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer = true,
@@ -89,6 +91,7 @@ builder.Services.AddCors(options =>
             .AllowCredentials());
 });
 
+builder.Services.AddHealthChecks();
 
 var app = builder.Build();
 
@@ -102,6 +105,8 @@ app.UseSwaggerUI(c =>
 app.UseHttpsRedirection();
 app.UseRouting();
 
+app.MapHealthChecks("/healthz");
+
 app.UseCors("AllowFrontend");
 
 app.UseAuthentication();
@@ -110,5 +115,3 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
-
-// Controller for Teacher management 

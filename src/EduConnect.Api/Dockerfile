@@ -22,8 +22,5 @@ COPY --from=build /app/out .
 # Set environment variable for production
 ENV ASPNETCORE_ENVIRONMENT=Production
 
-# Expose port (adjust if your app uses another)
-EXPOSE 5000
-
 # Run the application
 ENTRYPOINT ["dotnet", "EduConnect.Api.dll"]

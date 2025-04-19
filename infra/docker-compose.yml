@@ -1,0 +1,85 @@
+name: edc
+
+networks:
+  traefik:
+    name: traefik
+
+services:
+  educonnect:
+    container_name: educonnect
+    build:
+      context: ./../src/EduConnect.Api
+      dockerfile: ./Dockerfile
+    depends_on:
+      postgres:
+        condition: service_healthy
+    env_file:
+      - .env
+    volumes:
+      - ./logs:/app/logs
+    working_dir: /app
+    restart: always
+    networks:
+      - traefik
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.educonnect.rule=Host(`${HOSTNAME}`)"
+      - "traefik.http.routers.educonnect.service=educonnect"
+      - "traefik.http.routers.educonnect.entrypoints=web,websecure"
+      - "traefik.http.services.educonnect.loadbalancer.server.port=8080"
+      # - "traefik.http.routers.educonnect.tls=true"
+      # - "traefik.http.routers.educonnect.tls.certresolver=letsencrypt"
+      - "traefik.http.services.educonnect.loadbalancer.passhostheader=true"
+      - "traefik.http.routers.educonnect.middlewares=compresstraefik"
+      - "traefik.http.middlewares.compresstraefik.compress=true"
+      - "traefik.docker.network=traefik" 
+
+  postgres:
+    container_name: educonnect-postgres
+    image: postgres:16
+    restart: always
+    env_file:
+      - .env
+    ports:
+      - "5432:5432"
+    volumes:
+      - edc-pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "root"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - traefik
+
+  traefik:
+    image: traefik:latest
+    container_name: educonnect-traefik
+    command:
+      - "--log.level=DEBUG"
+      - "--accesslog=true"
+      - "--accesslog.format=json"
+      - "--entryPoints.web.address=:80"
+      - "--entryPoints.websecure.address=:443"
+      - "--providers.docker=true"
+      - "--providers.docker.endpoint=unix:///var/run/docker.sock"
+      - "--providers.docker.exposedByDefault=false"
+      - "--certificatesresolvers.letsencrypt.acme.tlschallenge=true"
+      - "--certificatesresolvers.letsencrypt.acme.email=farhodbek.kamolov2303@gmail.com"
+      - "--certificatesresolvers.letsencrypt.acme.storage=/etc/traefik/acme/acme.json"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - edc-traefik-certificates:/etc/traefik/acme
+    networks:
+      - traefik
+    ports:
+      - "80:80"
+      - "443:443"
+    restart: unless-stopped
+    depends_on:
+      educonnect:
+        condition: service_started 
+
+volumes:
+  edc-pgdata:
+  edc-traefik-certificates:
