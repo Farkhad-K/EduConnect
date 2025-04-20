@@ -46,14 +46,4 @@ public class StudentsRepository(
         => await context.Students.Include(c => c.Classes)
         .ThenInclude(c => c.Teacher).FirstOrDefaultAsync(s => s.UniqueToken == token, cancellationToken)
         ?? throw new StudentWithTokenNotFoundException(token);
-    // {
-    //     var existingStudent =  await context.Students.Include(c => c.Classes).FirstOrDefaultAsync(s => s.UniqueToken == token, cancellationToken);
-    //     if (existingStudent != null)
-    //         throw new StudentWithTokenNotFoundException(token);
-
-    //     var teacherOfStudent
-        
-    //     return await context.Students.Include(c => c.Classes).FirstOrDefaultAsync(s => s.UniqueToken == token, cancellationToken)
-    //     ?? throw new StudentWithTokenNotFoundException(token);
-    // }
 }
