@@ -12,5 +12,6 @@ public class Class
     public Academy? Academy { get; set; }
     public Guid? TeacherId { get; set; }
     public Teacher? Teacher { get; set; }
-    public ICollection<Student> Students { get; set; } = new List<Student>();
+    public ICollection<Student> Students { get; set; } = [];
+    public ICollection<Attendance> Attendances { get; set; } = [];
 }

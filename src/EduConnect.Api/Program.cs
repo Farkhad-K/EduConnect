@@ -18,19 +18,26 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<IEduConnectDbContext, EduConnectDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("EduConnect")));
 builder.Services.AddHostedService<MigrationsHostedService>();
-builder.Services.AddScoped<IAcademiesService, AcademiesService>();
+
+// Repositories
 builder.Services.AddScoped<IAcademyRepository, AcademyRepository>();
 builder.Services.AddScoped<IClassRepository, ClassRepository>();
-builder.Services.AddScoped<IClassesService, ClassesService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ITokensForTeachersRepository, TokensForTeachersRepository>();
+builder.Services.AddScoped<IStudentsRepository, StudentsRepository>();
+builder.Services.AddScoped<ITeacherRepository, TeacherRepository>();
+builder.Services.AddScoped<IAttendanceRepository, AttendanceRepository>();
+
+// Services
+builder.Services.AddScoped<IAcademiesService, AcademiesService>();
+builder.Services.AddScoped<IClassesService, ClassesService>();
 builder.Services.AddScoped<ITokensForTeachersService, TokensForTeachersService>();
 builder.Services.AddScoped<IStudentsService, StudentsService>();
-builder.Services.AddScoped<IStudentsRepository, StudentsRepository>();
 builder.Services.AddScoped<ITeachersService, TeachersService>();
-builder.Services.AddScoped<ITeacherRepository, TeacherRepository>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IAttendancesService, AttendancesService>();
 
+// Validators
 builder.Services.AddScoped<IValidator<RegisterRequest>, RegisterRequestValidator>();
 builder.Services.AddScoped<IValidator<RegisterAdminRequest>, RegisterAdminRequestValidator>();
 builder.Services.AddScoped<IValidator<RegisterTeacherRequest>, RegisterTeacherRequestValidator>();

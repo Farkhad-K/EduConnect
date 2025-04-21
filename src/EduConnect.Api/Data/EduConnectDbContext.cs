@@ -15,6 +15,7 @@ public class EduConnectDbContext(
     public DbSet<Teacher> Teachers { get; set; } = default!;
     public DbSet<SuperAdmin> SuperAdmins { get; set; } = default!;
     public DbSet<TokenForTeachers> TokensForTeachers { get; set; } = default!;
+    public DbSet<Attendance> Attendances { get; set; } = default!;
 
     async ValueTask<int> IEduConnectDbContext.SaveChangesAsync(CancellationToken cancellationToken)
         => await base.SaveChangesAsync(cancellationToken);

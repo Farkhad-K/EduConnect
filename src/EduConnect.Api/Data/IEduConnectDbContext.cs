@@ -15,5 +15,6 @@ public interface IEduConnectDbContext
     DbSet<Teacher> Teachers { get; set; }
     DbSet<SuperAdmin> SuperAdmins { get; set; }
     DbSet<TokenForTeachers> TokensForTeachers { get; set; }
+    DbSet<Attendance> Attendances { get; set; }
     ValueTask<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }
