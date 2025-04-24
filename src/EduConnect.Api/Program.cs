@@ -27,6 +27,7 @@ builder.Services.AddScoped<ITokensForTeachersRepository, TokensForTeachersReposi
 builder.Services.AddScoped<IStudentsRepository, StudentsRepository>();
 builder.Services.AddScoped<ITeacherRepository, TeacherRepository>();
 builder.Services.AddScoped<IAttendanceRepository, AttendanceRepository>();
+builder.Services.AddScoped<IParentsRepository, ParentsRepository>();
 
 // Services
 builder.Services.AddScoped<IAcademiesService, AcademiesService>();
@@ -36,6 +37,7 @@ builder.Services.AddScoped<IStudentsService, StudentsService>();
 builder.Services.AddScoped<ITeachersService, TeachersService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IAttendancesService, AttendancesService>();
+builder.Services.AddScoped<IParentsService, ParentsService>();
 
 // Validators
 builder.Services.AddScoped<IValidator<RegisterRequest>, RegisterRequestValidator>();
