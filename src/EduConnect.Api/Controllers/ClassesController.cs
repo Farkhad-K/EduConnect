@@ -17,6 +17,9 @@ public class ClassesController(
 {
     [Authorize(Roles = "Admin")]
     [HttpGet]
+    [Produces("application/json")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<Class>))]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async ValueTask<IActionResult> GetAllClassesAsync(CancellationToken abortionToken = default)
     {
         var academyId = GetAcademyIdFromToken();
@@ -29,6 +32,9 @@ public class ClassesController(
     }
 
     [HttpGet("{id:guid}")]
+    [Produces("application/json")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Class))]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetClassByIdAsync([FromRoute] Guid id, CancellationToken abortionToken = default)
     {
         try
@@ -45,6 +51,9 @@ public class ClassesController(
     // Modification is needed
     // [Authorize(Roles = "Teacher")]
     [HttpGet("my-classes")]
+    [Produces("application/json")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<Class>))]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async ValueTask<IActionResult> GetTeachersClassesAsync(CancellationToken abortionToken = default)
     {
         var teacherId = GetUserIdFromToken()!;
@@ -60,6 +69,10 @@ public class ClassesController(
 
     [Authorize(Roles = "Admin")]
     [HttpPost]
+    [Produces("application/json")]
+    [Consumes("application/json")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(string))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateClassAsync([FromBody] CreateClass classDto, CancellationToken cancellationToken = default)
     {
         var academyId = GetAcademyIdFromToken();
@@ -84,6 +97,8 @@ public class ClassesController(
 
     [Authorize(Roles = "Admin")]
     [HttpDelete("{id:guid}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> DeleteClassAsync([FromRoute] Guid id, CancellationToken cancellationToken = default)
     {
         try

@@ -12,6 +12,10 @@ namespace EduConnect.Api.Controllers;
 public class AttendancesController(IAttendancesService attendanceService) : ControllerBase
 {
     [HttpPost]
+    [Produces("application/json")]
+    [Consumes("application/json")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Attendance))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async ValueTask<IActionResult> AddAttendance([FromBody] CreateAttendance attendance, CancellationToken abortionToken = default)
     {
         var newAttandence = await attendanceService.AddAttendanceAsync(attendance.ToEntity(), abortionToken);
@@ -19,6 +23,9 @@ public class AttendancesController(IAttendancesService attendanceService) : Cont
     }
 
     [HttpGet("{classId}/{date}")]
+    [Produces("application/json")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<Attendance>))]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async ValueTask<IActionResult> GetAllAttendancesOfClass(
         Guid classId, DateOnly date, CancellationToken abortionToken = default)
     {
@@ -28,19 +35,19 @@ public class AttendancesController(IAttendancesService attendanceService) : Cont
 
 
     [HttpGet("{studentId}/{classId}/{date}")]
-    [ProducesResponseType(204)]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
-    // [SwaggerOperation(Summary = "Get a specific resource by ID", Description = "Returns the resource if found, or a 204 No Content if not found.")]
-    // [SwaggerResponse(StatusCodes.Status204NoContent, "No matching content found in the database.")]
+    [Produces("application/json")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Attendance))]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async ValueTask<IActionResult> GetAttendanceByStudentClassDate(Guid studentId, Guid classId, DateOnly date, CancellationToken abortionToken = default)
     {
         var attendance = await attendanceService.GetAttendanceByStudentClassDateAsync(studentId, classId, date, abortionToken);
         return Ok(attendance?.ToDto());
     }
 
-    // [HttpGet("{studentId}/all")]
     [HttpGet("all/{studentId}")]
+    [Produces("application/json")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<Attendance>))]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async ValueTask<IActionResult> GetAllAttendancesOfAStudent(Guid studentId, CancellationToken abortionToken = default)
     {
         var attendances = await attendanceService.GetAllAttendancesOfAStudentAsync(studentId, abortionToken);

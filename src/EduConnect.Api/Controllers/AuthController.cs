@@ -1,6 +1,8 @@
 using EduConnect.Api.Abstractions.RepositoriesAbstractions;
 using EduConnect.Api.Abstractions.ServicesAbstractions;
 using EduConnect.Api.Dtos;
+using EduConnect.Api.Dtos.ParentDtos;
+using EduConnect.Api.Entities;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,6 +22,10 @@ public class AuthController(
     /// Registers a new user (non-admin).
     /// </summary>
     [HttpPost("register-parent")]
+    [Produces("application/json")]
+    [Consumes("application/json")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(string))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(object))]
     public async Task<IActionResult> RegisterUser([FromBody] RegisterRequest request)
     {
         var validationResult = await registerValidator.ValidateAsync(request);
@@ -35,6 +41,10 @@ public class AuthController(
     /// Registers a new admin with an associated academy.
     /// </summary>
     [HttpPost("register-admin")]
+    [Produces("application/json")]
+    [Consumes("application/json")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(string))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(object))]
     public async Task<IActionResult> RegisterAdmin([FromBody] RegisterAdminRequest request)
     {
         var validationResult = await registerAdminValidator.ValidateAsync(request);
@@ -46,6 +56,10 @@ public class AuthController(
     }
 
     [HttpPost("register-teacher")]
+    [Produces("application/json")]
+    [Consumes("application/json")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(string))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(object))]
     public async Task<IActionResult> RegisterTeacher([FromBody] RegisterTeacherRequest request)
     {
         var validationResult = await registerTeacherValidator.ValidateAsync(request);
@@ -60,6 +74,10 @@ public class AuthController(
     /// Authenticates a user and returns a JWT token.
     /// </summary>
     [HttpPost("login")]
+    [Produces("application/json")]
+    [Consumes("application/json")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(object))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(object))]
     public async Task<IActionResult> Login([FromBody] LoginRequest request)
     {
         var validationResult = await loginValidator.ValidateAsync(request);

@@ -19,12 +19,6 @@ public class StudentsRepository(
         return entry.Entity;
     }
 
-    // public async ValueTask<Student> AppedToParentAsync(Guid studentId, Guid parentId, CancellationToken cancellationToken = default)
-    // {
-    //     var existingParent = await context.Parents.FirstOrDefaultAsync(p => p.Id == parentId, cancellationToken);
-    //     if (existingParent == null) throw new ParentNotFoundException(parentId);
-    // }
-
     public async ValueTask<bool> DeleteAsync(Guid id, CancellationToken cancellationToken = default)
     {
         try
