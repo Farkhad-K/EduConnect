@@ -9,5 +9,4 @@ public interface IStudentsRepository
     ValueTask<Student?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
     ValueTask<bool> DeleteAsync(Guid id, CancellationToken cancellationToken = default);
     ValueTask<IEnumerable<Student>> GetAllAsync(Guid academyId, CancellationToken cancellationToken = default);
-    // ValueTask<Student> AppedToParentAsync(Guid studentId, Guid parentId, CancellationToken cancellationToken = default);
 }
