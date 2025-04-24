@@ -1,4 +1,5 @@
 using EduConnect.Api.Abstractions.ServicesAbstractions;
+using EduConnect.Api.Dtos.TeacherDtos;
 using EduConnect.Api.Exceptions;
 using EduConnect.Api.Mappers.TeacherMappers;
 using EduConnect.Api.Utilities;
@@ -13,6 +14,9 @@ public class TeachersController(
     /*ILogger<TeachersController> logger*/) : ControllerBase
 {
     [HttpGet]
+    [Produces("application/json")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<Teacher>))]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetAllTeachersAsync(CancellationToken abortionToken = default)
     {
         var academyId = JwtClaimHelper.GetAcademyIdFromToken(User);
@@ -24,6 +28,9 @@ public class TeachersController(
     }
 
     [HttpGet("{id:guid}")]
+    [Produces("application/json")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Teacher))]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetTeacherByIdAsync(
         [FromRoute] Guid id,
         CancellationToken abortionToken = default)
@@ -40,6 +47,9 @@ public class TeachersController(
     }
 
     [HttpDelete("{id:guid}")]
+    [Produces("application/json")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> DeleteTeacherAsync([FromRoute] Guid id, CancellationToken abortionToken = default)
     {
         try

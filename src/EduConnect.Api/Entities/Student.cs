@@ -12,4 +12,5 @@ public class Student
     public Academy? Academy { get; set; }
     public ICollection<Class> Classes { get; set; } = new List<Class>();
     public ICollection<Parent> Parents { get; set; } = new List<Parent>();
+    public ICollection<Attendance> Attendances { get; set; } = [];
 }

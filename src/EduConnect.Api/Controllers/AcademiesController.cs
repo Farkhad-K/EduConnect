@@ -14,6 +14,9 @@ public class AcademiesController(
     ILogger<AcademiesController> logger) : ControllerBase
 {
     [HttpGet]
+    [Produces("application/json")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<Academy>))]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetAllAcademies(CancellationToken cancellationToken = default)
     {
         var academies = await academiesService.GetAllAcademiesAsync(cancellationToken);
@@ -21,6 +24,9 @@ public class AcademiesController(
     }
 
     [HttpGet("{id:guid}")]
+    [Produces("application/json")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Academy))]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetAcademyByIdAsync([FromRoute] Guid id, CancellationToken cancellationToken = default)
     {
         try
@@ -34,19 +40,11 @@ public class AcademiesController(
         }
     }
 
-    /// <summary>
-    /// Retrieves an academy by its unique token.
-    /// </summary>
-    /// <param name="token">The unique token associated with the academy.</param>
-    /// <param name="cancellationToken">A cancellation token to abort the request if necessary.</param>
-    /// <returns>
-    /// Returns an <see cref="IActionResult"/> containing:
-    /// - 200 OK with the academy data if found.
-    /// - 404 Not Found if no academy matches the token.
-    /// </returns>
-    [ProducesResponseType(typeof(Dtos.AcademyDtos.Academy), 200)]
-    [ProducesResponseType(404)]
+
     [HttpGet("by-token/{token}")]
+    [Produces("application/json")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Academy))]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetAcademyByTokenAsync([FromRoute] string token, CancellationToken cancellationToken = default)
     {
         try
@@ -61,6 +59,10 @@ public class AcademiesController(
     }
 
     [HttpPost]
+    [Produces("application/json")]
+    [Consumes("application/json")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(string))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateAcademyAsync([FromBody] CreateAcademy academyDto, CancellationToken cancellationToken = default)
     {
         try
@@ -77,6 +79,10 @@ public class AcademiesController(
     }
 
     [HttpPut("{id:guid}")]
+    [Produces("application/json")]
+    [Consumes("application/json")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Academy))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> UpdateAcademyAsync([FromRoute] Guid id, [FromBody] UpdateAcademy academyDto, CancellationToken cancellationToken = default)
     {
         try
@@ -91,6 +97,9 @@ public class AcademiesController(
     }
 
     [HttpDelete("{id:guid}")]
+    [Produces("application/json")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> DeleteAcademyAsync([FromRoute] Guid id, CancellationToken cancellationToken = default)
     {
         try

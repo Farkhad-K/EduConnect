@@ -17,6 +17,9 @@ public class StudentsController(
 {
     [Authorize(Roles = "Admin")]
     [HttpGet]
+    [Produces("application/json")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<Student>))]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async ValueTask<IActionResult> GetAllStudentsAsync(CancellationToken abortionToken = default)
     {
         var academyId = GetAcademyIdFromToken();
@@ -29,6 +32,9 @@ public class StudentsController(
     }
 
     [HttpGet("{id:guid}")]
+    [Produces("application/json")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Student))]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetStudentByIdAsync(Guid id, CancellationToken abortionToken = default)
     {
         try
@@ -45,6 +51,10 @@ public class StudentsController(
     // Change the method to handle creating a student with classes in service layer
     [Authorize(Roles = "Admin")]
     [HttpPost]
+    [Produces("application/json")]
+    [Consumes("application/json")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Student))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateStudentAsync([FromBody] CreateStudent studentDto, CancellationToken abortionToken = default)
     {
         var academyId = GetAcademyIdFromToken();
@@ -76,6 +86,9 @@ public class StudentsController(
         }
     }
 
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Student))]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [Produces("application/json")]
     [HttpGet("by-token/{token}")]
     public async ValueTask<IActionResult> GetStudentByTokenAsync([FromRoute] string token, CancellationToken abortionToken = default)
     {
@@ -87,6 +100,24 @@ public class StudentsController(
         catch (StudentWithTokenNotFoundException)
         {
             return NotFound($"Student with token {token} not found.");
+        }
+    }
+
+    [Authorize(Roles = "Admin")]
+    [HttpDelete("{id:guid}")]
+    [Produces("application/json")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async ValueTask<IActionResult> DeleteStudent([FromRoute] Guid id, CancellationToken abortionToken = default)
+    {
+        try
+        {
+            await studentsService.DeleteStudentAsync(id, abortionToken);
+            return NoContent();
+        }
+        catch (StudentNotFoundException)
+        {
+            return NotFound($"Student with ID {id} not found.");
         }
     }
 
