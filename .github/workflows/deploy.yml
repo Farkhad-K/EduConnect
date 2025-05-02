@@ -19,3 +19,20 @@ jobs:
       run: dotnet restore
     - name: Build
       run: dotnet build --configuration Release
+
+  dockerize:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /EduConnect
+            git checkout main
+            git pull origin main
+            docker-compose down
+            docker-compose up --build -d
