@@ -32,9 +32,9 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           username: ${{ secrets.SSH_USER }}
           script: |
-            cd /EduConnect
+            cd EduConnect
             git checkout main
             git pull origin main
-            cd /infra
+            cd infra
             docker-compose down
             docker-compose up --build -d
