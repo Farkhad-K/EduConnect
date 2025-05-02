@@ -20,16 +20,17 @@ jobs:
     - name: Build
       run: dotnet build --configuration Release
 
-  dockerize:
+  deploy:
+    name: Deploy to Timeweb Cloud
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - name: Deploy via SSH
-        uses: appleboy/ssh-action@v1.0.0
+      - name: Deploy .NET app to Timeweb Cloud
+        uses: appleboy/ssh-action@v1
         with:
           host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
+          username: ${{ secrets.SSH_USER }}
           script: |
             cd /EduConnect
             git checkout main
