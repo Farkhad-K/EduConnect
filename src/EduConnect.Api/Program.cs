@@ -3,6 +3,7 @@ using EduConnect.Api.Abstractions.RepositoriesAbstractions;
 using EduConnect.Api.Abstractions.ServicesAbstractions;
 using EduConnect.Api.Data;
 using EduConnect.Api.Dtos;
+using EduConnect.Api.Health;
 using EduConnect.Api.Repositories;
 using EduConnect.Api.Services;
 using EduConnect.Api.Validators;
@@ -13,6 +14,9 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddHealthChecks()
+    .AddCheck<DbHealthCheck>("PostgreSql");
 
 builder.Services.AddControllers();
 builder.Services.AddDbContext<IEduConnectDbContext, EduConnectDbContext>(options =>
