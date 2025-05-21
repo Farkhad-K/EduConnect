@@ -38,7 +38,7 @@ public static class EntityToDtoMappers
             Students = entity.Students.Select(s => new StudentsOfClass
             {
                 StudentId = s.Id,
-                StudnetName = s.Name
+                StudentName = s.Name
             }).ToList()
         };
 }

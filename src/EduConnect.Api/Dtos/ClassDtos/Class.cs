@@ -15,5 +15,5 @@ public class Class
 public class StudentsOfClass
 {
     public Guid StudentId { get; set; }
-    public string? StudnetName { get; set; }
+    public string? StudentName { get; set; }
 }
