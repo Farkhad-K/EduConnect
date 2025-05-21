@@ -33,12 +33,12 @@ public class ParentsController(
     [Consumes("application/json")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Parent))]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async ValueTask<IActionResult> AttachStudentToParent([FromBody]Guid studentId, CancellationToken abortionToken = default)
+    public async ValueTask<IActionResult> AttachStudentToParent([FromBody]AttachStudentsToParentDto child, CancellationToken abortionToken = default)
     {
         var parentId = JwtClaimHelper.GetUserIdFromToken(User);
         if (parentId is null) return Forbid("You do not have permission to access this resource.");
 
-        var result = await parentsService.AttachStudentToParent(parentId.Value, studentId, abortionToken);
+        var result = await parentsService.AttachStudentToParent(parentId.Value, child.StudentId, abortionToken);
         if (result)
             return Ok("Child attachet to parent successfully.");
 
