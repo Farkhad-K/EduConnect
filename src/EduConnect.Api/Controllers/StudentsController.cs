@@ -2,6 +2,7 @@ using EduConnect.Api.Abstractions.ServicesAbstractions;
 using EduConnect.Api.Dtos.StudentDtos;
 using EduConnect.Api.Exceptions;
 using EduConnect.Api.Mappers.StudentMappers;
+using EduConnect.Api.Utilities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,7 +23,7 @@ public class StudentsController(
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async ValueTask<IActionResult> GetAllStudentsAsync(CancellationToken abortionToken = default)
     {
-        var academyId = GetAcademyIdFromToken();
+        var academyId = JwtClaimHelper.GetAcademyIdFromToken(User);
 
         if (academyId == null)
             return Forbid("You do not have permission to access this resource.");
@@ -57,7 +58,7 @@ public class StudentsController(
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateStudentAsync([FromBody] CreateStudent studentDto, CancellationToken abortionToken = default)
     {
-        var academyId = GetAcademyIdFromToken();
+        var academyId = JwtClaimHelper.GetAcademyIdFromToken(User);
 
         if (academyId == null)
             return Forbid("You do not have permission to create a student.");
@@ -121,9 +122,9 @@ public class StudentsController(
         }
     }
 
-    private Guid? GetAcademyIdFromToken()
-    {
-        var academyIdClaim = User.Claims.FirstOrDefault(c => c.Type == "AcademyId")?.Value;
-        return Guid.TryParse(academyIdClaim, out var academyId) ? academyId : null;
-    }
+    // private Guid? GetAcademyIdFromToken()
+    // {
+    //     var academyIdClaim = User.Claims.FirstOrDefault(c => c.Type == "AcademyId")?.Value;
+    //     return Guid.TryParse(academyIdClaim, out var academyId) ? academyId : null;
+    // }
 }
